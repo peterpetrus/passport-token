@@ -20,7 +20,7 @@ class PassportToken
         $incorrect = false;
         $expired = false;
         $error = false;
-        $errors = [];
+        $errors = array();
         $token_segments = explode('.', $access_token);
 
         if (count($token_segments) != 3) {
@@ -41,7 +41,7 @@ class PassportToken
             $expired = true;
         }
 
-        return [
+        return array(
             'token_id' => (isset($data->jti)) ? $data->jti : null,
             'user_id' => (isset($data->sub)) ? $data->sub : null,
             'expecting' => $expecting,
@@ -56,7 +56,7 @@ class PassportToken
             'error' => $error,
             'errors' => $errors,
             'valid' => ($expecting || $incorrect || $expired || $error) ? false : true
-        ];
+        );
     }
 
     public static function urlDecode($input)
