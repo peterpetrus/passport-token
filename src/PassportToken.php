@@ -22,12 +22,13 @@ class PassportToken
         $error = false;
         $errors = array();
         $token_segments = explode('.', $access_token);
+        $body = (isset($token_segments[1])) ? $token_segments[1] : null;
 
         if (count($token_segments) != 3) {
             $error = true;
             $errors[] = "Token has wrong number of segments";
         }
-        if (null === $data = static::jsonDecode(static::urlDecode($token_segments[1]))) {
+        if (null === $data = static::jsonDecode(static::urlDecode($body))) {
             $error = true;
             $errors[] = "Decoder has problem with Token encoding";
         }
