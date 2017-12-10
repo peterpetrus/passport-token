@@ -22,7 +22,7 @@ use \DateTime;
  * @property array $errors
  * @property boolean $valid
  *
- * @package PeterPetrus\PassportToken
+ * @package PeterPetrus\Auth
  */
 class PassportToken
 {
@@ -50,6 +50,37 @@ class PassportToken
             return $this->properties[$property];
         }
         return null;
+    }
+
+    /**
+     * Check if token exists in DB (table 'oauth_access_tokens'), require \Illuminate\Support\Facades\DB class
+     *
+     * @return boolean
+     */
+    public function existsValid()
+    {
+        return static::existsValidToken($this->token_id, $this->user_id);
+    }
+
+    /**
+     * Check if token exists in DB (table 'oauth_access_tokens'), require \Illuminate\Support\Facades\DB class
+     *
+     * @param string $token_id
+     * @param string $user_id
+     *
+     * @return boolean
+     */
+    public static function existsValidToken($token_id, $user_id)
+    {
+        if (class_exists('\Illuminate\Support\Facades\DB')) {
+            return (bool) \Illuminate\Support\Facades\DB::table('oauth_access_tokens')
+                ->where('id', $token_id)
+                ->where('user_id', $user_id)
+                ->where('expires_at', '>=', date('Y-m-d H:i:s'))
+                ->get();
+        } else {
+            return false;
+        }
     }
 
     /**

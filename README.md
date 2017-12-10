@@ -15,7 +15,27 @@ composer require peterpetrus/passport-token
 
 ## Example
 
-### Decode token
+### Decode token as Object
+
+Object has same properties as returned array fields below.
+
+```php
+use PeterPetrus\Auth\PassportToken;
+
+$token = new PassportToken(
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjI2YTUyMTMxNDAzOGQ0NGY3OTVkMzYwZGQ0ZDlkNDBlYTQyNGU4N2ZlMjUyMmVhMTk5ZjU2ZWVmODg0ZTFhNWNmNjg2Nzk3NmQ2MDRmOWY5In0.eyJhdWQiOiIyIiwianRpIjoiMjZhNTIxMzE0MDM4ZDQ0Zjc5NWQzNjBkZDRkOWQ0MGVhNDI0ZTg3ZmUyNTIyZWExOTlmNTZlZWY4ODRlMWE1Y2Y2ODY3OTc2ZDYwNGY5ZjkiLCJpYXQiOjE1MTI3NDc1OTIsIm5iZiI6MTUxMjc0NzU5MiwiZXhwIjoxNTE4MTA0MzkyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.toksHokX_RZ7eRToL_owakMJ3gbi0nppD5yrhA9C5McVSnn3WraA4NwBcwQVlkv316BTUOaJ14unBNEg1UKGuK4EhoiTBMdT1cSkgH1HKZg2SXNBrCPi9YY4g4-4qpfxQqLeBM5JsVbouD6VeeBmDJUGVcoXDXimKEft4lgkIIqPCmWOV9HscKkRQ23lyVhXaQo4TMoCUZfM2ppyqdl2wTsrXp7woQMbqwVo9bnc4d6opj55XvMgal5MmY8YXDHpJO29UWkn2mTIL3kB6KP_WDHg5LJU0r1ua1lTn8Om97Z4eMFFUlipq7yODSgtML92kiZef7JAX3DecxJbzB9tcDk22NtSoBzlHy86ZJHU9rKhcIuKbpys6X2dAHAlkS7GUCWHqZcwN38LfjoyUEiP7QHkLNogSZQZE_I7FPKLYpxyOiR83K4IZGlOEeiEJZGCVqUWviyyIfWRA3gusk6p5cB4begxOne_l0vnNRH2WiB-WOKBytL1fKeXwaJj8AIFGj03Wvb0OYqp01ef05kiX9Y-PbHYYi_x5L8fcywXqo3ubKKiChqTCXirLH9ENcTwQT0C32Z2EgLlNnyF5iH9XQuW5UN36ke63ad0iIjlEhinoOOF8OK8IDKiHGIQ0qJwZxFG3EVDX3UFQpZUaAgYlNTTXhyT-fvf1dNR8msy-h0'
+);
+
+if ($token->valid) {
+    // Check if token exists in DB (table 'oauth_access_tokens'), require \Illuminate\Support\Facades\DB class
+    if ($token->existsValid()) {
+        Auth::login(User::find($token->user_id));
+        return redirect(...);
+    }
+}
+```
+
+### Decode token with static methods
 
 ```php
 use PeterPetrus\Auth\PassportToken;
@@ -24,12 +44,18 @@ $decoded_token = PassportToken::dirtyDecode(
     'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjI2YTUyMTMxNDAzOGQ0NGY3OTVkMzYwZGQ0ZDlkNDBlYTQyNGU4N2ZlMjUyMmVhMTk5ZjU2ZWVmODg0ZTFhNWNmNjg2Nzk3NmQ2MDRmOWY5In0.eyJhdWQiOiIyIiwianRpIjoiMjZhNTIxMzE0MDM4ZDQ0Zjc5NWQzNjBkZDRkOWQ0MGVhNDI0ZTg3ZmUyNTIyZWExOTlmNTZlZWY4ODRlMWE1Y2Y2ODY3OTc2ZDYwNGY5ZjkiLCJpYXQiOjE1MTI3NDc1OTIsIm5iZiI6MTUxMjc0NzU5MiwiZXhwIjoxNTE4MTA0MzkyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.toksHokX_RZ7eRToL_owakMJ3gbi0nppD5yrhA9C5McVSnn3WraA4NwBcwQVlkv316BTUOaJ14unBNEg1UKGuK4EhoiTBMdT1cSkgH1HKZg2SXNBrCPi9YY4g4-4qpfxQqLeBM5JsVbouD6VeeBmDJUGVcoXDXimKEft4lgkIIqPCmWOV9HscKkRQ23lyVhXaQo4TMoCUZfM2ppyqdl2wTsrXp7woQMbqwVo9bnc4d6opj55XvMgal5MmY8YXDHpJO29UWkn2mTIL3kB6KP_WDHg5LJU0r1ua1lTn8Om97Z4eMFFUlipq7yODSgtML92kiZef7JAX3DecxJbzB9tcDk22NtSoBzlHy86ZJHU9rKhcIuKbpys6X2dAHAlkS7GUCWHqZcwN38LfjoyUEiP7QHkLNogSZQZE_I7FPKLYpxyOiR83K4IZGlOEeiEJZGCVqUWviyyIfWRA3gusk6p5cB4begxOne_l0vnNRH2WiB-WOKBytL1fKeXwaJj8AIFGj03Wvb0OYqp01ef05kiX9Y-PbHYYi_x5L8fcywXqo3ubKKiChqTCXirLH9ENcTwQT0C32Z2EgLlNnyF5iH9XQuW5UN36ke63ad0iIjlEhinoOOF8OK8IDKiHGIQ0qJwZxFG3EVDX3UFQpZUaAgYlNTTXhyT-fvf1dNR8msy-h0'
 );
 
-// or object
-
-$token = new PassportToken(
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjI2YTUyMTMxNDAzOGQ0NGY3OTVkMzYwZGQ0ZDlkNDBlYTQyNGU4N2ZlMjUyMmVhMTk5ZjU2ZWVmODg0ZTFhNWNmNjg2Nzk3NmQ2MDRmOWY5In0.eyJhdWQiOiIyIiwianRpIjoiMjZhNTIxMzE0MDM4ZDQ0Zjc5NWQzNjBkZDRkOWQ0MGVhNDI0ZTg3ZmUyNTIyZWExOTlmNTZlZWY4ODRlMWE1Y2Y2ODY3OTc2ZDYwNGY5ZjkiLCJpYXQiOjE1MTI3NDc1OTIsIm5iZiI6MTUxMjc0NzU5MiwiZXhwIjoxNTE4MTA0MzkyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.toksHokX_RZ7eRToL_owakMJ3gbi0nppD5yrhA9C5McVSnn3WraA4NwBcwQVlkv316BTUOaJ14unBNEg1UKGuK4EhoiTBMdT1cSkgH1HKZg2SXNBrCPi9YY4g4-4qpfxQqLeBM5JsVbouD6VeeBmDJUGVcoXDXimKEft4lgkIIqPCmWOV9HscKkRQ23lyVhXaQo4TMoCUZfM2ppyqdl2wTsrXp7woQMbqwVo9bnc4d6opj55XvMgal5MmY8YXDHpJO29UWkn2mTIL3kB6KP_WDHg5LJU0r1ua1lTn8Om97Z4eMFFUlipq7yODSgtML92kiZef7JAX3DecxJbzB9tcDk22NtSoBzlHy86ZJHU9rKhcIuKbpys6X2dAHAlkS7GUCWHqZcwN38LfjoyUEiP7QHkLNogSZQZE_I7FPKLYpxyOiR83K4IZGlOEeiEJZGCVqUWviyyIfWRA3gusk6p5cB4begxOne_l0vnNRH2WiB-WOKBytL1fKeXwaJj8AIFGj03Wvb0OYqp01ef05kiX9Y-PbHYYi_x5L8fcywXqo3ubKKiChqTCXirLH9ENcTwQT0C32Z2EgLlNnyF5iH9XQuW5UN36ke63ad0iIjlEhinoOOF8OK8IDKiHGIQ0qJwZxFG3EVDX3UFQpZUaAgYlNTTXhyT-fvf1dNR8msy-h0'
-);
-
+if ($decoded_token['valid']) {
+    // Check if token exists in DB (table 'oauth_access_tokens'), require \Illuminate\Support\Facades\DB class
+    $token_exists = PassportToken::existsValidToken(
+        $decoded_token['token_id'], 
+        $decoded_token['user_id']
+    );
+    
+    if ($token_exists) {
+        Auth::login(User::find($decoded_token['user_id']));
+        return redirect(...);
+    }
+}
 ```
 
 ### Returned array $decoded_token
@@ -51,14 +77,4 @@ $token = new PassportToken(
     "errors" => [],
     "valid" => true
 ]
-```
-
-### Returned object $token
-
-Object has same properties as returned array fields.
-
-```php
-if ($token->valid) {
-    // Check $token->token_id and $token->user_id in Database for Authorization
-}
 ```
