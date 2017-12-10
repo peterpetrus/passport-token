@@ -1,6 +1,6 @@
 <?php
 
-namespace PeterPetrus\PassportToken;
+namespace PeterPetrus\Auth;
 
 use \DateTime;
 
