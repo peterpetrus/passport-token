@@ -4,8 +4,54 @@ namespace PeterPetrus\PassportToken;
 
 use \DateTime;
 
+/**
+ * Class PassportToken
+ *
+ * @property int $token_id
+ * @property int $user_id
+ * @property boolean $expecting
+ * @property int $start_at_unix
+ * @property string $start_at
+ * @property boolean $incorrect
+ * @property int $created_at_unix
+ * @property string $created_at
+ * @property boolean $expired
+ * @property int $expires_at_unix
+ * @property string $expires_at
+ * @property boolean $error
+ * @property array $errors
+ * @property boolean $valid
+ *
+ * @package PeterPetrus\PassportToken
+ */
 class PassportToken
 {
+    private $token = null;
+    private $properties = array();
+
+    public function __construct($token)
+    {
+        $this->properties = static::dirtyDecode($token);
+        $this->token = $token;
+    }
+
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    public function getProperties()
+    {
+        return $this->properties;
+    }
+
+    public function __get($property) {
+        if (array_key_exists($property, $this->properties)) {
+            return $this->properties[$property];
+        }
+        return null;
+    }
+
     /**
      * Decode a Access Token
      *
