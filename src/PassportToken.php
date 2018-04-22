@@ -7,7 +7,7 @@ use \DateTime;
 /**
  * Class PassportToken
  *
- * @property int $token_id
+ * @property string $token_id
  * @property int $user_id
  * @property boolean $expecting
  * @property int $start_at_unix
