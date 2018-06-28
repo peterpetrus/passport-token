@@ -8,7 +8,7 @@ use \DateTime;
  * Class PassportToken
  *
  * @property string $token_id
- * @property int $user_id
+ * @property string $user_id
  * @property boolean $expecting
  * @property int $start_at_unix
  * @property string $start_at
