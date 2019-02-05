@@ -90,7 +90,7 @@ class PassportToken
      *
      * @return array
      */
-    public static function dirtyDecode($access_token)
+    public static function dirtyDecode($access_token, $claims = [])
     {
         $now = time();
         $expecting = false;
@@ -98,6 +98,7 @@ class PassportToken
         $expired = false;
         $error = false;
         $errors = array();
+        $decodedToken = array();
         $token_segments = explode('.', $access_token);
         $body = (isset($token_segments[1])) ? $token_segments[1] : null;
 
@@ -119,7 +120,7 @@ class PassportToken
             $expired = true;
         }
 
-        return array(
+        $decodedToken =  array(
             'token_id' => (isset($data->jti)) ? $data->jti : null,
             'user_id' => (isset($data->sub)) ? $data->sub : null,
             'expecting' => $expecting,
@@ -135,6 +136,12 @@ class PassportToken
             'errors' => $errors,
             'valid' => ($expecting || $incorrect || $expired || $error) ? false : true
         );
+
+        if(!empty($claims)){
+            $decodedToken['claims'] = static::getCustomClaims($data, $claims);
+        }
+
+        return $decodedToken;
     }
 
     public static function urlDecode($input)
@@ -163,5 +170,19 @@ class PassportToken
             return null;
         }
         return $obj;
+    }
+
+    public static function getCustomClaims($data, $claims)
+    {
+        $decodedToken = array();
+        foreach ($claims as $claim){
+            foreach ($data as $key => $value) {
+                if ($key == $claim) {
+                    $decodedToken[$claim] = (isset($claim)) ? $value : null;
+                }
+            }
+        }
+
+        return $decodedToken;
     }
 }
