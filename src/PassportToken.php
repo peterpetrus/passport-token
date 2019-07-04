@@ -77,7 +77,7 @@ class PassportToken
                 ->where('id', $token_id)
                 ->where('user_id', $user_id)
                 ->where('expires_at', '>=', date('Y-m-d H:i:s'))
-                ->get();
+                ->count();
         } else {
             return false;
         }
