@@ -77,7 +77,7 @@ class PassportToken
                 ->where('id', $token_id)
                 ->where('user_id', $user_id)
                 ->where('expires_at', '>=', date('Y-m-d H:i:s'))
-                ->get();
+                ->count();
         } else {
             return false;
         }
@@ -87,10 +87,11 @@ class PassportToken
      * Decode a Access Token
      *
      * @param string $access_token Access Token
+     * @param array $claims
      *
      * @return array
      */
-    public static function dirtyDecode($access_token, $claims = [])
+    public static function dirtyDecode($access_token, $claims = array())
     {
         $now = time();
         $expecting = false;
@@ -98,7 +99,6 @@ class PassportToken
         $expired = false;
         $error = false;
         $errors = array();
-        $decodedToken = array();
         $token_segments = explode('.', $access_token);
         $body = (isset($token_segments[1])) ? $token_segments[1] : null;
 
