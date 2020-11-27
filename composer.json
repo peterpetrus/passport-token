@@ -3,7 +3,7 @@
   "description": "Dirty Decoder for Laravel Passport (Bearer) Access Token",
   "license": "MIT",
   "require": {
-    "php": "^5.3.3 || ^7.0"
+    "php": "^5.3.3 || ^7.0 || ^8.0" 
   },
   "autoload": {
     "classmap": [
