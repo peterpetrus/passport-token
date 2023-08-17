@@ -93,7 +93,7 @@ class PassportToken
      */
     public static function dirtyDecode($access_token, $claims = array())
     {
-        $now = time();
+        $now = microtime(true);
         $expecting = false;
         $incorrect = false;
         $expired = false;

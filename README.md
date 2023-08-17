@@ -1,5 +1,5 @@
 # passport-token
-Dirty Decoder for Laravel Passport (Bearer) Access Token.
+Decoder for Laravel Passport (Bearer) Access Token.
 
 ## Functionality
 
