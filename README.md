@@ -5,6 +5,8 @@ Decoder for Laravel Passport (Bearer) Access Token.
 
 Decode Access-Token and return array with its IDs (token_id, user_id), Dates (date of expire, date of creation, start date) and validity and errors.
 
+[![Donate with Lightning Network](https://i.ibb.co/X7NvYTj/donate-with-ln-mini.png)](https://hydranode.org/btcpay/apps/2sYChS6rMmpzt7h9BhzCSZrbbXxB/pos)
+
 ## Installation
 
 Installation via composer:
